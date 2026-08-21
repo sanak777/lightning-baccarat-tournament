@@ -1,0 +1,42 @@
+/* The flying clone lives outside .chips, so it needs its own complete chip skin. */
+.flyingChip {
+  position: fixed !important;
+  z-index: 100 !important;
+  width: 64px !important;
+  height: 64px !important;
+  min-width: 64px !important;
+  min-height: 64px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  overflow: hidden !important;
+  isolation: isolate;
+  pointer-events: none !important;
+  color: #fff !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  line-height: 64px !important;
+  text-align: center !important;
+  text-shadow: 0 1px 2px #000 !important;
+  background: repeating-conic-gradient(#f7e6b0 0 8deg, var(--chip) 8deg 24deg, #f7e6b0 24deg 32deg, var(--chip) 32deg 48deg) !important;
+  box-shadow: inset 0 0 0 3px #e8d59b, inset 0 0 0 8px var(--chip), inset 0 0 0 11px #f3df9f, 0 5px 9px #000 !important;
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, .65)) !important;
+}
+.flyingChip::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 14px;
+  border: 2px solid #ead89d;
+  border-radius: 50%;
+  background: radial-gradient(circle, #30343a 0 60%, var(--chip) 62% 100%);
+  box-shadow: inset 0 0 5px #000;
+}
+.flyingChip::after { display: none !important; }
+.flyingChip span { position: relative; z-index: 2; }
+.flyingChip.chip5 { --chip: #8d162b; }
+.flyingChip.chip10 { --chip: #aa7905; }
+.flyingChip.chip30 { --chip: #78401a; }
+.flyingChip.chip50 { --chip: #087096; }
+.flyingChip.chip100 { --chip: #1b2029; }
