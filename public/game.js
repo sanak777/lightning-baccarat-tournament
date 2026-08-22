@@ -14,7 +14,13 @@ function renderPayoutBoard(){
   const winners=state.result.payouts.filter(x=>x.won&&x.winPayout>0).sort((a,b)=>b.winPayout-a.winPayout);
   board.classList.add('show');
   if(!winners.length){list.innerHTML='<p>이번 라운드 당첨자가 없습니다.</p>';return}
-  list.innerHTML=winners.map(x=>`<div class="payoutWinner ${x.tiePayout>0?'tieWinner':''}"><div><strong>${x.seat}번 · ${escapeHtml(x.nickname)}</strong><small>총 베팅 ${money(x.stake)} · 수수료 ${money(x.fee)}</small>${x.tiePayout>0?`<small class="tieFormula">타이 ${money(x.tieBet)} × 8 × ${x.tieMultiplier} + 원금 = ${money(x.tiePayout)}</small>`:''}</div><b>당첨 ${money(x.winPayout)}</b></div>`).join('');
+  list.innerHTML=winners.map(x=>{
+    const formulas=[];
+    if(x.tiePayout>0)formulas.push(`타이 ${money(x.tieBet)} × 8 × ${x.tieMultiplier} + 원금 = ${money(x.tiePayout)}`);
+    if(x.playerPairPayout>0)formulas.push(`플레이어 페어 ${money(x.playerPairBet)} × 11 × ${x.playerPairMultiplier} + 원금 = ${money(x.playerPairPayout)}`);
+    if(x.bankerPairPayout>0)formulas.push(`뱅커 페어 ${money(x.bankerPairBet)} × 11 × ${x.bankerPairMultiplier} + 원금 = ${money(x.bankerPairPayout)}`);
+    return`<div class="payoutWinner ${formulas.length?'tieWinner':''}"><div><strong>${x.seat}번 · ${escapeHtml(x.nickname)}</strong><small>총 베팅 ${money(x.stake)} · 수수료 ${money(x.fee)}</small>${formulas.map(f=>`<small class="tieFormula">${f}</small>`).join('')}</div><b>당첨 ${money(x.winPayout)}</b></div>`;
+  }).join('');
 }
 function paintDraft(){const me=mine();$('#amount').textContent=money(total());$('#fee').textContent=money(fee());$('#charge').textContent=money(charge());$$('.bet').forEach(el=>{const side=el.dataset.side,v=draft[side]||0,holder=el.querySelector('.chip');el.classList.toggle('staked',v>0);holder.innerHTML=v?`<span class="placedChip ${chipClass(lastChip[side]||5000)}">${chipLabel(v)}</span>`:''});$('#myInfo').textContent=me?`${me.seat}번 ${me.nickname} · 보유금 ${money(me.balance)}${me.eliminated?' · 탈락':''}`:'빈 좌석을 눌러 참가해주세요';renderPayoutBoard()}
 function renderSeats(){
