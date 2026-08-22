@@ -1,5 +1,5 @@
 const crypto = require('node:crypto');
-const BUY_IN=200_000,TARGET=2_000_000,MAX_SEATS=20,BET_SECONDS=15,RESULT_SECONDS=7,LIGHTNING_VALUES=[2,3,4,5,8];
+const BUY_IN=200_000,TARGET=10_000_000,MAX_SEATS=20,BET_SECONDS=15,RESULT_SECONDS=7,LIGHTNING_VALUES=[2,3,4,5,8];
 const RANKS=['A','2','3','4','5','6','7','8','9','10','J','Q','K'],SUITS=['♠','♥','♦','♣'];
 const newState=()=>({phase:'lobby',round:0,deadline:null,seats:Array(MAX_SEATS).fill(null),bets:{},lightning:[],cards:{player:[],banker:[]},result:null,winner:null,history:[],adminOnline:false});
 function card(){return{rank:RANKS[crypto.randomInt(RANKS.length)],suit:SUITS[crypto.randomInt(SUITS.length)]}}
