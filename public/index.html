@@ -11,6 +11,15 @@
 @keyframes introGlow{to{transform:scale(1.05);filter:brightness(1.18)}}
 @media (min-aspect-ratio:941/1672){.introScreen{background:radial-gradient(circle at center,#13102b 0,#02030a 55%,#000 100%)}}
 @media (prefers-reduced-motion:reduce){.introScreen,.introScreen::before{animation:none;transition:none}}
+.payoutBoard{display:none;margin:0;padding:9px 10px 10px;border-block:1px solid #6e5427;background:linear-gradient(180deg,#15110b,#080b10);box-shadow:inset 0 0 24px #e1aa1c15}
+.payoutBoard.show{display:block;animation:payoutOpen .35s ease both}
+.payoutHead{display:flex;align-items:center;justify-content:space-between;padding:2px 2px 8px;border-bottom:1px solid #46381f}
+.payoutHead b{color:#ffe16b;font-size:12px}.payoutHead span{padding:3px 7px;border-radius:999px;background:#153225;color:#65f2a2;font-size:8px}
+.payoutList{display:grid;gap:5px;max-height:150px;padding-top:7px;overflow:auto}.payoutList p{margin:8px;text-align:center;color:#8a9299;font-size:10px}
+.payoutWinner{display:grid;grid-template-columns:1fr auto;gap:7px;align-items:center;padding:7px 9px;border:1px solid #39434c;border-radius:8px;background:#0e141b}
+.payoutWinner.tieWinner{border-color:#17864b;box-shadow:inset 3px 0 #26d87b}.payoutWinner strong{display:block;font-size:11px}.payoutWinner small{display:block;margin-top:3px;color:#97a1a9;font-size:8px}
+.payoutWinner .tieFormula{color:#5ff0a0}.payoutWinner b{color:#ffe16b;font-size:13px;white-space:nowrap}
+@keyframes payoutOpen{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 </style></head><body><div id="introScreen" class="introScreen" role="dialog" aria-label="바카라산악회 라이트닝 바카라 입장 화면">
   <div class="introArtwork">
     <button id="introEnter" class="introEnter" type="button" aria-label="게임참가">
@@ -24,6 +33,10 @@
 <section id="lightning" class="lightning"><p>⚡ 베팅 후 라이트닝 카드가 공개됩니다</p></section>
 <section class="road"><div class="beads" id="beads"></div><div class="score"><span class="p">P <b id="pcnt">0</b></span><span class="b">B <b id="bcnt">0</b></span><span class="t">T <b id="tcnt">0</b></span></div></section>
 <section class="cardStage"><div class="hand player"><div id="playerCards" class="cards"></div><strong>PLAYER <em id="pt">0</em></strong></div><div id="result" class="result">베팅할 곳을 선택하세요</div><div class="hand banker"><div id="bankerCards" class="cards"></div><strong>BANKER <em id="bt">0</em></strong></div></section>
+<section id="payoutBoard" class="payoutBoard" aria-live="polite">
+  <div class="payoutHead"><b>🏆 이번 라운드 당첨자</b><span>관전자 공개</span></div>
+  <div id="payoutList" class="payoutList"><p>카드 공개 후 표시됩니다.</p></div>
+</section>
 <section class="sideBets"><button class="bet pairP" data-side="playerPair"><b>플레이어 페어</b><em>11 : 1</em><i class="chip"></i></button><button class="bet tie" data-side="tie"><b>타이</b><em>8 : 1</em><i class="chip"></i></button><button class="bet pairB" data-side="bankerPair"><b>뱅커 페어</b><em>11 : 1</em><i class="chip"></i></button></section><section class="bets"><button class="bet player" data-side="player"><b>플레이어</b><em>1 : 1</em><i class="chip"></i></button><button class="bet banker" data-side="banker"><b>뱅커</b><em>0.95 : 1</em><i class="chip"></i></button></section>
 <section class="chips"><button data-v="5000" class="chip5 on"><span>5천</span></button><button data-v="10000" class="chip10"><span>1만</span></button><button data-v="30000" class="chip30"><span>3만</span></button><button data-v="50000" class="chip50"><span>5만</span></button><button data-v="100000" class="chip100"><span>10만</span></button></section>
 <section class="wagerSummary"><div><small>베팅금액</small><b id="amount">₩0</b></div><span>+</span><div class="fee"><small>수수료 20%</small><b id="fee">₩0</b></div><span>=</span><div><small>총 차감액</small><b id="charge">₩0</b></div></section><section class="action"><button id="undo">전체취소</button><button id="deal">베팅완료</button></section><p class="notice" id="myInfo">빈 좌석을 눌러 참가해주세요</p></div>
