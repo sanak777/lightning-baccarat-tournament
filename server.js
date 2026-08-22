@@ -11,6 +11,8 @@ function resolveRound(){
   state.cards={player:d.player,banker:d.banker};
   const winningHand=d.outcome==='player'?d.player:d.outcome==='banker'?d.banker:[...d.player,...d.banker];
   const multiplier=G.multiplierFor(winningHand,state.lightning);
+  const playerMultiplier=G.multiplierFor(d.player,state.lightning);
+  const bankerMultiplier=G.multiplierFor(d.banker,state.lightning);
   const playerPair=d.player[0].rank===d.player[1].rank;
   const bankerPair=d.banker[0].rank===d.banker[1].rank;
   const payouts=[];
@@ -23,6 +25,8 @@ function resolveRound(){
     let winPayout=0;
     let tieProfit=0;
     let tiePayout=0;
+    let playerPairPayout=0;
+    let bankerPairPayout=0;
 
     // 타이일 때 플레이어/뱅커 베팅은 원금만 반환합니다.
     if(d.outcome==='tie')returned+=w.player+w.banker;
@@ -42,12 +46,12 @@ function resolveRound(){
       returned+=tiePayout;winPayout+=tiePayout;
     }
     if(w.playerPair&&playerPair){
-      const amount=w.playerPair*12;
-      returned+=amount;winPayout+=amount;
+      playerPairPayout=w.playerPair+(w.playerPair*11*playerMultiplier);
+      returned+=playerPairPayout;winPayout+=playerPairPayout;
     }
     if(w.bankerPair&&bankerPair){
-      const amount=w.bankerPair*12;
-      returned+=amount;winPayout+=amount;
+      bankerPairPayout=w.bankerPair+(w.bankerPair*11*bankerMultiplier);
+      returned+=bankerPairPayout;winPayout+=bankerPairPayout;
     }
 
     s.balance+=returned;
@@ -62,12 +66,18 @@ function resolveRound(){
       tieMultiplier:d.outcome==='tie'&&w.tie?multiplier:1,
       tieProfit,
       tiePayout,
+      playerPairBet:w.playerPair,
+      playerPairMultiplier,
+      playerPairPayout,
+      bankerPairBet:w.bankerPair,
+      bankerPairMultiplier,
+      bankerPairPayout,
       won:winPayout>0
     });
   }
 
   state.seats.forEach(s=>{if(s&&s.balance<6000)s.eliminated=true});
-  state.result={...d,playerPair,bankerPair,lightningMultiplier:multiplier,payouts};
+  state.result={...d,playerPair,bankerPair,lightningMultiplier:multiplier,playerLightningMultiplier:playerMultiplier,bankerLightningMultiplier:bankerMultiplier,payouts};
   state.history.unshift({round:state.round,outcome:d.outcome,playerTotal:d.playerTotal,bankerTotal:d.bankerTotal,multiplier});
   state.history=state.history.slice(0,18);
   emit();
