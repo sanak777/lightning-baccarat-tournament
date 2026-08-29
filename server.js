@@ -2,7 +2,7 @@ const express=require('express'),http=require('node:http'),path=require('node:pa
 const app=express(),server=http.createServer(app),io=new Server(server);app.use(express.static(path.join(__dirname,'public')));app.get('/health',(_,res)=>res.json({ok:true}));
 let state=G.newState(),timer=null;const tokens=new Set(),wagerKeys=['player','tie','banker','playerPair','bankerPair'],emit=()=>io.emit('state',G.publicState(state)),seatByToken=token=>state.seats.find(s=>s?.token===token),active=()=>state.seats.filter(s=>s&&!s.eliminated);
 function setTimer(seconds,fn){clearTimeout(timer);state.deadline=Date.now()+seconds*1000;emit();timer=setTimeout(fn,seconds*1000)}
-function checkWinner(){const alive=active(),reached=alive.filter(s=>s.balance>=G.TARGET).sort((a,b)=>b.balance-a.balance),winner=reached[0]||(state.round>0&&alive.length===1?alive[0]:null);if(!winner)return false;state.winner={nickname:winner.nickname,balance:winner.balance,seat:winner.seat};state.phase='finished';state.deadline=null;clearTimeout(timer);emit();return true}
+function checkWinner(){const alive=active(),reached=alive.filter(s=>s.balance>=G.TARGET).sort((a,b)=>b.balance-a.balance),winner=reached[0]||(state.round>G.PRELOADED_ROUNDS&&alive.length===1?alive[0]:null);if(!winner)return false;state.winner={nickname:winner.nickname,balance:winner.balance,seat:winner.seat};state.phase='finished';state.deadline=null;clearTimeout(timer);emit();return true}
 function beginBetting(){if(checkWinner())return;state.round++;state.phase='betting';state.bets={};state.cards={player:[],banker:[]};state.result=null;state.lightning=G.lightning();setTimer(G.BET_SECONDS,resolveRound)}
 function resolveRound(){
   if(state.phase!=='betting')return;
@@ -79,7 +79,7 @@ function resolveRound(){
   state.seats.forEach(s=>{if(s&&s.balance<6000)s.eliminated=true});
   state.result={...d,playerPair,bankerPair,lightningMultiplier:multiplier,playerLightningMultiplier:playerMultiplier,bankerLightningMultiplier:bankerMultiplier,payouts};
   state.history.unshift({round:state.round,outcome:d.outcome,playerTotal:d.playerTotal,bankerTotal:d.bankerTotal,multiplier});
-  state.history=state.history.slice(0,18);
+  state.history=state.history.slice(0,20);
   emit();
   setTimer(18,()=>{if(!checkWinner())beginBetting()});
 }
