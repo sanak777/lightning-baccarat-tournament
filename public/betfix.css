@@ -107,3 +107,18 @@
 .score{min-width:42px;gap:5px;font-size:12px;font-weight:900}
 .strike em{right:3px!important;bottom:3px!important;padding:3px 6px!important;font-size:15px!important;line-height:1.1!important;font-weight:1000!important;letter-spacing:-.2px;box-shadow:0 1px 5px #000}
 @media(min-width:700px){.road{height:112px;padding:12px 18px}.beads{height:84px;grid-template-rows:repeat(3,24px);grid-auto-columns:24px;gap:5px}.bead{width:24px;height:24px;border-width:4px}.score{min-width:78px;font-size:14px}.strike em{padding:4px 7px!important;font-size:18px!important}}
+
+/* 페어 점: 플레이어 왼쪽 위, 뱅커 오른쪽 아래 */
+.bead{position:relative;overflow:visible}
+.bead.playerPair:before,.bead.bankerPair:after{content:"";position:absolute;z-index:3;width:7px;height:7px;border:1px solid #d8efff;border-radius:50%;background:#168cff;box-shadow:0 0 5px #168cff}
+.bead.playerPair:before{left:-5px;top:-5px}
+.bead.bankerPair:after{right:-5px;bottom:-5px}
+
+/* 중앙 당첨자 롤러: 흰색 글씨만 7초 동안 아래에서 위로 */
+.result.payoutRollerHost{position:relative;height:100%;overflow:visible;animation:none;color:#fff}
+.roundRollerViewport{position:absolute;z-index:5;left:50%;top:0;width:min(270px,58vw);height:100%;transform:translateX(-50%);overflow:hidden;pointer-events:none}
+.roundRoller{position:absolute;left:0;right:0;top:0;color:#fff;font-size:12px;font-weight:800;line-height:1.45;text-align:center;text-shadow:0 2px 4px #000;animation:payoutRollUp 7s linear both}
+.roundRoller div{padding:4px 2px;color:#fff;white-space:nowrap}
+.roundRoller b{display:inline!important;margin-left:5px;color:#fff!important;font-size:inherit!important;font-weight:900}
+@keyframes payoutRollUp{0%{transform:translateY(115px);opacity:0}8%{opacity:1}88%{opacity:1}100%{transform:translateY(-110%);opacity:0}}
+@media(min-width:700px){.bead.playerPair:before,.bead.bankerPair:after{width:9px;height:9px}.bead.playerPair:before{left:-6px;top:-6px}.bead.bankerPair:after{right:-6px;bottom:-6px}.roundRollerViewport{width:340px}.roundRoller{font-size:15px;line-height:1.55}}
