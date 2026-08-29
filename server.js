@@ -78,7 +78,7 @@ function resolveRound(){
 
   state.seats.forEach(s=>{if(s&&s.balance<6000)s.eliminated=true});
   state.result={...d,playerPair,bankerPair,lightningMultiplier:multiplier,playerLightningMultiplier:playerMultiplier,bankerLightningMultiplier:bankerMultiplier,payouts};
-  state.history.unshift({round:state.round,outcome:d.outcome,playerTotal:d.playerTotal,bankerTotal:d.bankerTotal,multiplier});
+  state.history.unshift({round:state.round,outcome:d.outcome,playerTotal:d.playerTotal,bankerTotal:d.bankerTotal,multiplier,playerPair,bankerPair});
   state.history=state.history.slice(0,20);
   emit();
   setTimer(18,()=>{if(!checkWinner())beginBetting()});

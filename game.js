@@ -6,7 +6,7 @@ function initialHistory(){
   const history=[];
   for(let round=1;round<=PRELOADED_ROUNDS;round++){
     const d=deal();
-    history.unshift({round,outcome:d.outcome,playerTotal:d.playerTotal,bankerTotal:d.bankerTotal,multiplier:1,preloaded:true});
+    history.unshift({round,outcome:d.outcome,playerTotal:d.playerTotal,bankerTotal:d.bankerTotal,multiplier:1,playerPair:d.player[0].rank===d.player[1].rank,bankerPair:d.banker[0].rank===d.banker[1].rank,preloaded:true});
   }
   return history;
 }
