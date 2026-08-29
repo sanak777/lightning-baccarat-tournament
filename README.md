@@ -23,10 +23,10 @@
 
 ```bash
 npm install
-ADMIN_PASSWORD=9981 npm start
+ADMIN_PASSWORD=8959 npm start
 ```
 
-브라우저에서 `http://localhost:3000`을 엽니다. 관리자 비밀번호는 `9981`입니다.
+브라우저에서 `http://localhost:3000`을 엽니다. 관리자 비밀번호는 `8959`입니다.
 
 ## Render
 
